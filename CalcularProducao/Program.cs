@@ -15,59 +15,47 @@ namespace CalcularProducao
             Console.WriteLine("Lendo planilha de dados");
             var wb = new XLWorkbook(@"D:\WN\Sobras padaria.xlsx");
             var planilha = wb.Worksheet(1);
+                        
+            //inicia da linha 3 da planilha, pois a 1 é cabecalho e a 2 os titulos das colunas
+            var startLine = 3;
 
-            Console.WriteLine("Iniciar processamento?");
-            Console.WriteLine("Sim = 1");
-            Console.WriteLine("Não = 2");
 
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            List<Produto> produtos = new();
 
-            if (keyInfo.Key == ConsoleKey.D1)
+            while (true)
             {
-                //inicia da linha 3 da planilha, pois a 1 é cabecalho e a 2 os titulos das colunas
-                var startLine = 3;
+                var id = planilha.Cell("A" + startLine.ToString()).Value.ToString();
+                var qtd = planilha.Cell("B" + startLine.ToString()).Value.ToString();
+                var nome = planilha.Cell("C" + startLine.ToString()).Value.ToString();
 
+                //quando a linha estiver em branco ou vazia finaliza o laco de repeticao
+                if (string.IsNullOrEmpty(id))
+                    break;
 
-                List<Produto> produtos = new();
+                Produto p = new(Convert.ToInt32(id), Convert.ToDouble(qtd), nome);
 
-                while (true)
+                var existe = produtos.Exists(x => x.Id == p.Id);
+
+                if (existe == true)
                 {
-                    var id = planilha.Cell("A" + startLine.ToString()).Value.ToString();
-                    var qtd = planilha.Cell("B" + startLine.ToString()).Value.ToString();
-                    var nome = planilha.Cell("C" + startLine.ToString()).Value.ToString();
-
-                    //quando a linha estiver em branco ou vazia finaliza o laco de repeticao
-                    if (string.IsNullOrEmpty(id))
-                        break;
-
-                    Produto p = new(Convert.ToInt32(id), Convert.ToDouble(qtd), nome);
-
-                    var existe = produtos.Exists(x => x.Id == p.Id);
-
-                    if (existe == true)
-                    {
-                        Produto produto = produtos.Find(delegate (Produto pd) { return pd.Id == p.Id; });
-                        double novaQtd = CalcularValor(produto.Qtd, p.Qtd);
-                        p.Qtd = novaQtd;
-                        produtos.Remove(produto);
-                        Console.WriteLine("Produto removido: " + produto.Nome);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Novo produto adicionado");
-                    }
-
-                    produtos.Add(p);
-                    startLine++;
+                    Produto produto = produtos.Find(delegate (Produto pd) { return pd.Id == p.Id; });
+                    double novaQtd = CalcularValor(produto.Qtd, p.Qtd);
+                    p.Qtd = novaQtd;
+                    produtos.Remove(produto);
+                    Console.WriteLine("Produto removido: " + produto.Nome);
+                }
+                else
+                {
+                    Console.WriteLine("Novo produto adicionado");
                 }
 
-                wb.Dispose();
-                ExibirResultado(produtos);
+                produtos.Add(p);
+                startLine++;
             }
-            else
-            {
-                Environment.Exit(0);
-            }
+
+            wb.Dispose();
+            ExibirResultado(produtos);
+            
         }
 
         public static double CalcularValor(double valor1, double valor2)
