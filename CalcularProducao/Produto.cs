@@ -8,7 +8,7 @@ namespace CalcularProducao
 {
     public class Produto
     {
-        public Produto(int id, double qtd, string nome)
+        public Produto(int id, decimal qtd, string nome)
         {
             Id = id;
             Qtd = qtd;
@@ -16,7 +16,7 @@ namespace CalcularProducao
         }
 
         public int Id { get; set; }
-        public double Qtd { get; set; }
+        public decimal Qtd { get; set; }
         public string Nome { get; set; }
     }
 }

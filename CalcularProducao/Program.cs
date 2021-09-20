@@ -32,14 +32,19 @@ namespace CalcularProducao
                 if (string.IsNullOrEmpty(id))
                     break;
 
-                Produto p = new(Convert.ToInt32(id), Convert.ToDouble(qtd), nome);
+                //Console.WriteLine(td);
+                decimal qtdValor = Convert.ToDecimal(qtd);
+                Console.WriteLine(qtdValor);
+                var x = decimal.Round(qtdValor, 3);
+                Console.WriteLine("x = " + decimal.Round(x,3));
+                Produto p = new(Convert.ToInt32(id), qtdValor, nome);
 
                 var existe = produtos.Exists(x => x.Id == p.Id);
 
                 if (existe == true)
                 {
                     Produto produto = produtos.Find(delegate (Produto pd) { return pd.Id == p.Id; });
-                    double novaQtd = CalcularValor(produto.Qtd, p.Qtd);
+                    decimal novaQtd = CalcularValor(produto.Qtd, p.Qtd);
                     p.Qtd = novaQtd;
                     produtos.Remove(produto);
                     Console.WriteLine("Produto removido: " + produto.Nome);
@@ -58,9 +63,9 @@ namespace CalcularProducao
             
         }
 
-        public static double CalcularValor(double valor1, double valor2)
+        public static decimal CalcularValor(decimal valor1, decimal valor2)
         {
-            double soma = valor1 + valor2;
+            decimal soma = valor1 + valor2;
             return soma;
         }
 
