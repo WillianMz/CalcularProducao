@@ -14,13 +14,12 @@ namespace CalcularProducao
         
         static void Main(string[] args)
         {   
-            Console.WriteLine(" 2021 - Willian Software");
+            Console.WriteLine(" 2022 WILLIAN");
             Console.WriteLine(" Calculo de Producao");
             Console.WriteLine(" Versão 1.0");
             Console.WriteLine(" Codigo fonte: https://github.com/WillianMz/CalcularProducao");
             Console.WriteLine("");
-            Animation();
-            Console.WriteLine("ATENÇÃO: Programa em fase de desenvolvimento!");
+            //Animation();            
             Console.WriteLine("");
             //CreateFileJsonConfig();
             ReadFileJsonConfig();
@@ -50,7 +49,7 @@ namespace CalcularProducao
                     
                     var qtdValor = Convert.ToDecimal(qtd);
                     decimal xy = decimal.Round(qtdValor, 3);
-                    Produto p = new(Convert.ToInt32(id), xy, nome);
+                    Produto p = new(Convert.ToInt32(id), xy, nome.ToUpper().Trim());
                     var existe = produtos.Exists(x => x.Id == p.Id);
 
                     if (existe == true)
@@ -89,17 +88,16 @@ namespace CalcularProducao
             try
             {                
                 sw.WriteLine("Quantidade a serem produzidas\n");
-                sw.WriteLine("---------------- START ----------------\n");
+                sw.WriteLine("---------------- INICIO ----------------\n");
 
                 foreach (var p in produtos)
                 {                    
-                    sw.WriteLine($"{p.Id} .......... {p.Qtd} Kg/un .......... {p.Nome}");
+                    sw.WriteLine($"{p.Id} .......... {p.Qtd} .......... {p.Nome}");
                     Console.WriteLine($"{p.Id} - {p.Qtd} Kg/UN -- {p.Nome}");
                 }
 
                 sw.WriteLine("\n");
-                sw.WriteLine("---------------- END ----------------");
-                sw.WriteLine($"CALCPROD 1.0");
+                sw.WriteLine("---------------- FIM ----------------");
                 sw.Close();
             }
             catch(Exception ex)
@@ -112,10 +110,10 @@ namespace CalcularProducao
             }
         }
 
-        public static void Animation()
-        {
-            Console.WriteLine(FiggleFonts.Ivrit.Render("Willian 2021"));
-        }
+        //public static void Animation()
+        //{
+        //    Console.WriteLine(FiggleFonts.Ivrit.Render("Willian 2021"));
+        //}
 
         public static void ReadFileJsonConfig()
         {                    
